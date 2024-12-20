@@ -25,65 +25,165 @@
 
     <div class="container">
         <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <h6>Nama anda</h6>
-                            <input type="text" name="name" id="name" class="form-control">
-                        </div>
-                    </div>
+            {{-- karena get method makanya muncul di url data yang kita inputkan --}}
+            <form action="{{ url('/') }}" method="GET">
+                @csrf
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group mb-2">
-                                <h6>Kirim dari</h6>
-                                <select name="" id="" class="form-control">
-                                    <option value="">PILIH PROVINSI</option>
-                                </select>
-                            </div>
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <select name="" id="" class="form-control">
-                                    <option value="">Pilih Kota</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 mb-2">
-                            <div class="form-group mb-2">
-                                <h6>Kirim ke</h6>
-                                <select name="" id="" class="form-control">
-                                    <option value="">PILIH PROVINSI</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="" id="" class="form-control">
-                                    <option value="">Pilih Kota</option>
-                                </select>
+                                <h6>Nama anda</h6>
+                                <input type="text" name="name" id="name" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h6>Berat paket</h6>
-                                <input type="text" name="berat" id="berat" class="form-control">
-                                <small>Dalam gram contoh = 1700 / 1,7kg</small>
+                                <div class="form-group mb-2">
+                                    <h6>Kirim dari</h6>
+                                    <select name="province_form" id="province_form" class="form-control">
+                                        <option value="">PILIH PROVINSI</option>
+                                        @foreach ($provinsi as $item)
+                                            <option value="{{ $item->id }}">{{ $item->province }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="origin" id="origin" class="form-control">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <h6>Pilih Kurir</h6>
-                                <select name="" id="" class="form-select">
-                                    <option value="" selected disabled>Pilih Kurir</option>
-                                    <option value="jne">JNE</option>
-                                    <option value="tiki">TIKI</option>
-                                    <option value="pos">POS</option>
-                                </select>
+                            <div class="col-sm-6 mb-2">
+                                <div class="form-group mb-2">
+                                    <h6>Kirim ke</h6>
+                                    <select name="province_to" id="province_to" class="form-control">
+                                        <option value="">PILIH PROVINSI</option>
+                                        @foreach ($provinsi as $item)
+                                            <option value="{{ $item->id }}">{{ $item->province }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="destination" id="destination" class="form-control">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h6>Berat paket</h6>
+                                    <input type="text" name="weight" id="berat" class="form-control">
+                                    <small>Dalam gram contoh = 1700 / 1,7kg</small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h6>Pilih Kurir</h6>
+                                    <select name="courier" id="" class="form-select">
+                                        <option value="" selected disabled>Pilih Kurir</option>
+                                        <option value="jne">JNE</option>
+                                        <option value="tiki">TIKI</option>
+                                        <option value="pos">POS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success btn-block w-100">Submit</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+            </form>
+
+            @if ($cekongkir)
+                <div class="row mt-4">
+                    <div class="col">
+                        <table class="table table-striped table-bordered table-hovered" width="100%">
+                            <thead>
+                                <tr>
+                                    <td>Service</td>
+                                    <td>Deskripsi</td>
+                                    <td>Harga</td>
+                                    <td>Estimasi</td>
+                                    <td>Note</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cekongkir as $result)
+                                    <tr>
+                                        <td>{{ $result['service'] }}</td>
+                                        <td>{{ $result['description'] }}</td>
+                                        <td>{{ $result['cost'][0]['value'] }}</td>
+                                        <td>{{ $result['cost'][0]['etd'] }}</td>
+                                        <td>{{ $result['cost'][0]['note'] }}</td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
-            </div>
+            @endif
+
         </div>
+
+    </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('select[name="province_form"]').on('change', function() {
+                var cityId = $(this).val();
+                // console.log(cityId);
+                if (cityId) {
+                    $.ajax({
+                        url: 'getCity/ajax/' + cityId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="origin"]').empty();
+                            $.each(data, function(key, value) {
+                                $('select[name="origin"]').append(
+                                    '<option value="' +
+                                    key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="origin"]').empty();
+                }
+            });
+
+            $('select[name="province_to"]').on('change', function() {
+                var cityId = $(this).val();
+                // console.log(cityId);
+                if (cityId) {
+                    $.ajax({
+                        url: 'getCity/ajax/' + cityId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="destination"]').empty();
+                            $.each(data, function(key, value) {
+                                $('select[name="destination"]').append(
+                                    '<option value="' +
+                                    key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="destination"]').empty();
+                }
+            });
+
+        });
     </script>
 </body>
 

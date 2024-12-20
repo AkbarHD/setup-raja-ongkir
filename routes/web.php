@@ -17,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', 'getApi@index');
+Route::get('/', 'getApi@index')->name('home');
+Route::post('/tambah', 'getApi@store')->name('tambah');
+Route::get('/getCity/ajax/{id}', 'getApi@ajax');
