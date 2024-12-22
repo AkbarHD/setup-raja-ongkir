@@ -32,11 +32,6 @@ class getApi extends Controller
             $destination = $request->destination;
             $weight = $request->weight;
             $courier = $request->courier;
-        } else {
-            $origin = ''; // kota asal yanbg ingin kita kirim
-            $destination = '';
-            $weight = '';
-            $courier = '';
         }
 
         $response = Http::asForm()->withHeaders([
